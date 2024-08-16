@@ -1,0 +1,15 @@
+fastapi==0.95.0
+uvicorn==0.21.1
+gunicorn==20.1.0
+easyocr==1.5.0
+paddleocr==2.5.0
+transformers==4.30.2
+celery==5.2.7
+redis==4.6.0
+psycopg2-binary==2.9.6
+sqlalchemy==1.4.41
+docker==6.0.1
+docker-compose==1.29.2
+pytest==7.3.1
+coverage==7.2.5
+loguru==0.6.0

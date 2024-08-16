@@ -1,0 +1,170 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+env.bak/
+venv.bak/
+
+# Test logs
+coverage.xml
+*.cover
+.hypothesis/
+*.hypothesis_journal
+
+# Environments
+.env
+.env.local
+.env.*.local
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Pyre type checker
+.pyre/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyright static type checker
+pyrightconfig.json
+
+# Spyder project settings
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# Docker files
+docker-compose.yml
+Dockerfile
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# Sphinx documentation
+docs/_build/
+
+# Pytest
+.pytest_cache/
+
+# SQLite files
+*.sqlite3
+
+# Redis dump files
+dump.rdb
+
+# General database files
+*.db
+
+# Ignore input and output data directories
+data/input_images/
+data/processed_text/
+
+# Ignore unit test coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+*.hypothesis_journal
+
+# Node modules (if using a frontend framework like React or Vue.js)
+node_modules/
+
+# Package-lock.json (if using npm)
+package-lock.json
+
+# Yarn integrity files (if using Yarn)
+.yarn-integrity
+yarn.lock
+
+# Backup files
+*.bak
+*.swp
+
+# IDE specific files
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/
+*.tmproj
+*.tm_build_errors
+*.nfs*
+venv/
+__pycache__/
+.env
+data/
+
+# Model checkpoints
+model_checkpoints/*
+
+# Meta downloaded model
+Meta*
