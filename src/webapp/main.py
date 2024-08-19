@@ -13,7 +13,7 @@ model, tokenizer = load_llama_model_from_checkpoint(checkpoint_path,
                                                     device='cpu')
 
 # Initialize the OCR service
-ocr_service = OCRService(model='easyocr', language=['en', 'vi', 'th'])
+ocr_service = OCRService(model='easyocr', language=['en', 'th'])
 
 @app.get("/")
 async def root():
