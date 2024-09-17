@@ -54,5 +54,5 @@ With the basic environment set up, the next steps will involve implementing the 
   - Integrate with monitoring tools like Prometheus and Grafana if needed.
   - Write unit tests to ensure logs are generated correctly under different scenarios.
 
-## Conclusion
-Once these steps are completed, the core functionalities of your OCR-to-LLM system will be ready for testing and further optimization. Each step includes implementing the necessary components, ensuring they work as expected, and validating them through unit tests.
+## TODO
+- More Features
