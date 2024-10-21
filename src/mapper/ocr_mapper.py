@@ -1,7 +1,12 @@
 from abc import ABC, abstractmethod
 from google_format import GoogleVisionMapper
 # from openai_format import OpenAIMapper
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/utils')))
+from config import setup_logger
 
+logger = setup_logger('pipeline')
 class OCRMapper(ABC):
     def __init__(self):
         """
@@ -26,7 +31,7 @@ class OCRMapper(ABC):
             NotImplementedError: If the method is not implemented by a subclass.
         """
         pass
-    
+    @logger.catch
     def map_ocr_result(self, ocr_result: dict) -> dict:
         """
         Map the OCR result to Google Vision API format.
@@ -40,11 +45,12 @@ class OCRMapper(ABC):
         Returns:
             dict: The OCR result mapped to Google Vision API format.
         """
+        logger.info("Mapping ocr result")
         # Extract properties from ocr model
         extracted_ocr = self.extract_ocr_properties(ocr_result)
         
         # Delegate the final mapping to the GoogleVisionMapper
-        return self.google_vision_mapper.map_to_google_vision(ocr_result)
+        return self.google_vision_mapper.map_to_google_vision(extracted_ocr)
 
         # if format_type == "google":
         #     return self.google_vision_mapper.map_to_google_vision(ocr_result)

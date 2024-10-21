@@ -1,6 +1,13 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/utils')))
+from config import setup_logger
 
+logger = setup_logger('pipeline')
 class GoogleVisionMapper:
+    
     @staticmethod
+    @logger.catch
     def format_text_annotations(ocr_result: list) -> list:
         """
         Format OCR results into Google Vision API-like text annotations.
@@ -20,6 +27,7 @@ class GoogleVisionMapper:
             - The first item in the returned list has empty 'locale' and null coordinates.
             - Individual annotations do not include confidence scores.
         """
+        logger.info("Formatting text annotations")
         full_description = " ".join([item['description'] for item in ocr_result])
         
         # Create the first part of textAnnotations with full description
@@ -43,12 +51,14 @@ class GoogleVisionMapper:
             }
             
             text_annotations.append(annotation)
-        
+        logger.debug(f"Created {len(text_annotations)} text annotations")
         return text_annotations
-
+    
     @staticmethod
+    @logger.catch
     def format_full_text_annotation(ocr_result: list) -> dict:
         """Formats OCR result into full text annotation."""
+        logger.info("Formatting full text annotation")
         words = []
         
         for item in ocr_result:
@@ -71,10 +81,12 @@ class GoogleVisionMapper:
             "pages": [page],
             "text": " ".join([item['description'] for item in ocr_result])
         }
-
+        logger.debug(f"Created full text annotation with {len(words)} words")   
         return full_text_annotation
-
+    
+    @logger.catch
     def map_to_google_vision(self, ocr_result: list) -> dict:
+        logger.info("Mapping OCR result to Google Vision format")
         text_annotations = self.format_text_annotations(ocr_result)
         full_text_annotation = self.format_full_text_annotation(ocr_result)
         
@@ -86,11 +98,13 @@ class GoogleVisionMapper:
                 }
             ]
         }
-        
+        logger.info("Completed mapping to Google Vision format")
         return result
-    
+
+@logger.catch  
 def create_symbol(description: str) -> list:
     """Creates a list of symbols from the description."""
+    logger.debug(f"Creating symbols for description: {description}")
     return [
         {
             **({'property': {
@@ -102,8 +116,10 @@ def create_symbol(description: str) -> list:
         } for i,char in enumerate(description)
     ]
 
+@logger.catch
 def create_word(symbols: list, bounding_box: dict) -> dict:
     """Creates a word object from the given symbols and bounding box."""
+    logger.debug(f"Creating word with {len(symbols)} symbols")
     return {
         "property": {
             "detectedLanguages": [
@@ -115,16 +131,20 @@ def create_word(symbols: list, bounding_box: dict) -> dict:
         "confidence": None
     }
 
+@logger.catch
 def create_paragraph(words: list) -> dict:
     """Creates a paragraph object from the given words."""
+    logger.debug(f"Creating paragraph with {len(words)} words")
     return {
         "boundingBox": {None},
         "words": words,
         "confidence": None
     }
 
+@logger.catch
 def create_block(paragraphs: list) -> dict:
     """Creates a block object from the given paragraphs."""
+    logger.debug(f"Creating block with {len(paragraphs)} paragraphs")
     return {
         "boundingBox": {None},
         "paragraphs": paragraphs,
@@ -132,8 +152,10 @@ def create_block(paragraphs: list) -> dict:
         "confidence": None
     }
 
+@logger.catch
 def create_page(blocks: list) -> dict:
     """Creates a page object from the given blocks."""
+    logger.debug(f"Creating page with {len(blocks)} blocks")
     return {
         "property": {
             "detectedLanguages": [
@@ -145,3 +167,4 @@ def create_page(blocks: list) -> dict:
         "blocks": blocks,
         "confidence": None
     }
+
