@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from langchain.llms.base import LLM
@@ -22,12 +24,41 @@ model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 
 
 # logger.info(f"Starting to load the model {model_name} into memory")
+def read_model_config(base_path='src/mapper/model_cache/models--meta-llama--Meta-Llama-3.1-8B-Instruct'):
+    try:
+        # Get the snapshots directory
+        snapshots_dir = Path(base_path) / 'snapshots'
+        
+        # List all directories in snapshots (there should be only one)
+        snapshot_folders = list(snapshots_dir.glob('*'))
+        
+        if not snapshot_folders:
+            raise FileNotFoundError("No snapshot folder found")
+            
+        # Get the first (and usually only) snapshot folder
+        snapshot_folder = snapshot_folders[0]
+        
+        # Construct the path to generation_config.json
+        config_path = snapshot_folder / 'generation_config.json'
+        
+        # Read and parse the JSON file
+        with open(config_path, 'r') as file:
+            config = json.load(file)
+            
+        return config
+        
+    except Exception as e:
+        print(f"Error reading config: {str(e)}")
+        return None
 
-def load_model_and_tokenizer(model_name: str, cache_dir: str = "./model_cache") -> Tuple[AutoModelForCausalLM, AutoTokenizer]:
+
+def load_model_and_tokenizer(model_name: str, cache_dir: str = "./model_cache", checkpoint_dir: str = "./checkpoints") -> Tuple[AutoModelForCausalLM, AutoTokenizer]:
     """
     Load a model and tokenizer from Hugging Face or a local path.
     """
-    model_path = ""
+    # Create checkpoint path for this specific model
+    model_checkpoint_path = os.path.join(checkpoint_dir, model_name.split('/')[-1])
+    
     try:
         # Set up kwargs for model loading
         model_kwargs = {
@@ -39,23 +70,23 @@ def load_model_and_tokenizer(model_name: str, cache_dir: str = "./model_cache") 
             model_kwargs["cache_dir"] = cache_dir
 
         # Load the model
-        if not os.path.exists(model_path):
+        if not os.path.exists(model_checkpoint_path):
             print(f"Downloading model {model_name}...")
             model = AutoModelForCausalLM.from_pretrained(
                 model_name,
                 **model_kwargs,
                 token=os.getenv("HUGGINGFACE_TOKEN")
             )
-            # model.save_pretrained(model_path)
+            # model.save_pretrained(model_checkpoint_path)
             tokenizer = AutoTokenizer.from_pretrained(model_name, token=os.getenv("HUGGINGFACE_TOKEN") )
-            # tokenizer.save_pretrained(model_path)
+            # tokenizer.save_pretrained(model_checkpoint_path)
         else:
-            print(f"Loading model from {model_path}...")
+            print(f"Loading model from {model_checkpoint_path}...")
             model = AutoModelForCausalLM.from_pretrained(
-                model_path,
+                model_checkpoint_path,
                 **model_kwargs,
             )
-            tokenizer = AutoTokenizer.from_pretrained(model_path)
+            tokenizer = AutoTokenizer.from_pretrained(model_checkpoint_path)
 
         return model, tokenizer
 
@@ -105,8 +136,8 @@ class LlamaVitalSignsExtractor(LLM):
 
 # Define the OCRPostProcessor class
 class OCRPostProcessor:
-    def __init__(self, llm=None):
-        model, tokenizer = load_model_and_tokenizer(model_name)
+    def __init__(self, model, tokenizer, llm=None):
+        # model, tokenizer = load_model_and_tokenizer(model_name)
         self.llm = llm if llm else LlamaVitalSignsExtractor(model=model, tokenizer=tokenizer)
         logger.info("Initialized OCRPostProcessor")
 
