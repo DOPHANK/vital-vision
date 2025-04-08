@@ -1,0 +1,51 @@
+name: VitalDB FastAPI CI
+
+on:
+  push:
+    branches:
+      - main
+      - ci
+      - fine_tune
+      - pipeline
+  pull_request:
+    branches:
+      - main
+      - ci
+      - fine_tune
+      - pipeline
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'  # Adjust the Python version as needed
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov flake8 httpx pytest-mock pytest-asyncio
+        pip install -r docs/requirements.txt
+
+    # Run linting (flake8 in this case)
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        flake8 --max-line-length=88 --ignore=E203,W503 .
+
+    # Run tests (using pytest in this example)
+    - name: Run tests
+      run: |
+        pip install pytest
+        pytest
+
+  # For deploying the FastAPI app in Render/Vercel/Heroku - TODO

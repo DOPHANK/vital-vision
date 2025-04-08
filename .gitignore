@@ -135,6 +135,9 @@ coverage.xml
 *.py,cover
 .hypothesis/
 *.hypothesis_journal
+coverage_html/
+
+tests/sample_images/*
 
 # Node modules (if using a frontend framework like React or Vue.js)
 node_modules/

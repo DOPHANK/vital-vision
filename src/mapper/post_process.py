@@ -4,14 +4,16 @@ from langchain.llms.base import LLM
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from typing import Any, Optional, List
+import os 
 
 # Load the Llama model and tokenizer
-model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+model_name = "meta-llama/Llama-3.1-8B-Instruct"
 print(f"Starting to load the model {model_name} into memory")
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     torch_dtype=torch.bfloat16,
-    device_map="auto"
+    device_map="auto",
+    token = os.getenv("HUGGINGFACE_TOKEN")
 )
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 # tokenizer.bos_token_id = 1

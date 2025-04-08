@@ -1,25 +1,79 @@
+"""
+LLM Integration Module
+
+This module provides integration with Large Language Models (LLMs) using the Llama model.
+It includes functionality for model loading, text generation, and LangChain integration.
+
+Classes:
+    CustomLlamaLLM: Custom LLM implementation for Llama models
+    LlamaIntegrationPipeline: Pipeline for Llama model integration
+    ModelNotFoundError: Custom exception for model loading failures
+    ModelLoadingError: Custom exception for model initialization failures
+"""
+
 import torch
-from transformers import LlamaForCausalLM, LlamaTokenizer,\
-    PreTrainedTokenizerFast,AutoTokenizer
-# from langchain.llms import Llama
-# from langchain import LLMChain
+from transformers import (
+    LlamaForCausalLM, 
+    LlamaTokenizer,
+    PreTrainedTokenizerFast,
+    AutoTokenizer
+)
 from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 from dotenv import load_dotenv
 import os
 import transformers
 
-
 # Load environment variables from .env file
 load_dotenv()
 
+class ModelNotFoundError(Exception):
+    """Custom exception for model loading failures."""
+    pass
+
+class ModelLoadingError(Exception):
+    """Custom exception for model initialization failures."""
+    pass
+
 class CustomLlamaLLM:
-    def __init__(self, model, tokenizer, device='cpu'):
+    """
+    Custom LLM implementation for Llama models.
+
+    This class provides a custom implementation of the LLM interface for Llama models,
+    handling model initialization and text generation.
+
+    Attributes:
+        model (Any): The Llama model instance
+        tokenizer (Any): The tokenizer for the model
+        device (str): Device to run the model on
+
+    Methods:
+        generate: Generate text from input prompt
+    """
+
+    def __init__(self, model: Any, tokenizer: Any, device: str = 'cpu'):
+        """
+        Initialize the custom LLM.
+
+        Args:
+            model (Any): Llama model instance
+            tokenizer (Any): Model tokenizer
+            device (str): Device to run on (default: 'cpu')
+        """
         self.model = model
         self.tokenizer = tokenizer
         self.device = device
 
     def generate(self, prompt: str) -> str:
+        """
+        Generate text from input prompt.
+
+        Args:
+            prompt (str): Input text prompt
+
+        Returns:
+            str: Generated text
+        """
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
         with torch.no_grad():
             outputs = self.model.generate(**inputs)
@@ -196,36 +250,46 @@ load_dotenv()
 
 
 class LlamaIntegrationPipeline:
-    def __init__(self, model_dir, device="cpu", max_length=50, max_new_tokens=30):
-        """
-        Initialize the LlamaIntegrationPipeline with the given model directory and device setup.
-
-        Parameters:
-        -----------
-        model_dir : str
-            The directory where the local model checkpoint and tokenizer are stored.
-        device : str
-            The device setup, either "cpu" or "cuda".
-        max_length : int
-            The maximum total length (input + generated tokens).
-        max_new_tokens : int
-            The maximum number of tokens to generate.
-        """
-        # Load the tokenizer and model from the local directory
-        self.tokenizer = LlamaTokenizer.from_pretrained(model_dir)
-        self.model = LlamaForCausalLM.from_pretrained(
-            model_dir, 
-            torch_dtype=torch.bfloat16, 
-            low_cpu_mem_usage=True
-        )
-
-        # Move the model to the specified device
+    def __init__(self, model_dir: str, device: str = "cpu", 
+                 max_length: int = 50, max_new_tokens: int = 30):
+        # Add model versioning
+        self.model_version = ModelVersioning()
+        
+        # Add quantization support
+        self.quantization = QuantizationManager()
+        
+        # Add model optimization
+        self.optimizer = ModelOptimizer()
+        
+        # Add memory management
+        self.memory_manager = MemoryManager()
+        
+        self.model_dir = model_dir
         self.device = device
-        self.model.to(self.device)
-
-        # Store the max_length and max_new_tokens
         self.max_length = max_length
         self.max_new_tokens = max_new_tokens
+        
+        # Add model loading validation
+        self._validate_model_dir()
+        self._load_model()
+        
+    def _validate_model_dir(self):
+        """Validate model directory and files."""
+        if not os.path.exists(self.model_dir):
+            raise ModelNotFoundError(f"Model directory not found: {self.model_dir}")
+            
+    def _load_model(self):
+        """Load model with proper error handling."""
+        try:
+            self.tokenizer = LlamaTokenizer.from_pretrained(self.model_dir)
+            self.model = LlamaForCausalLM.from_pretrained(
+                self.model_dir, 
+                torch_dtype=torch.bfloat16, 
+                low_cpu_mem_usage=True
+            )
+            self.model.to(self.device)
+        except Exception as e:
+            raise ModelLoadingError(f"Failed to load model: {str(e)}")
 
     def generate_text(self, prompt: str) -> str:
         """

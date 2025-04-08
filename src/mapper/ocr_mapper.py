@@ -1,63 +1,120 @@
+"""
+OCR Mapper Module
+
+This module provides abstract base classes and implementations for mapping OCR results
+to standardized formats. It supports multiple output formats and includes validation
+and error handling mechanisms.
+
+Classes:
+    OCRMapper: Abstract base class for OCR result mapping
+    MapperValidationError: Custom exception for mapper validation failures
+    MappingError: Custom exception for mapping operation failures
+"""
+
 from abc import ABC, abstractmethod
-from google_format import GoogleVisionMapper
-# from openai_format import OpenAIMapper
+from typing import Dict, List, Any
+import logging
+from .google_format import GoogleVisionMapper
+from .utils.format_registry import FormatRegistry
+from .utils.validation_pipeline import ValidationPipeline
+from .utils.result_cache import ResultCache
+from .utils.error_handler import ErrorHandler
+
+logger = logging.getLogger(__name__)
+
+class MapperValidationError(Exception):
+    """Custom exception for mapper validation failures."""
+    pass
+
+class MappingError(Exception):
+    """Custom exception for mapping operation failures."""
+    pass
 
 class OCRMapper(ABC):
-    def __init__(self):
-        """
-        Initialize the OCRMapper with a GoogleVisionMapper instance.
-        """
-        self.google_vision_mapper = GoogleVisionMapper()
-        # self.openai_mapper = OpenAIMapper()
-    @abstractmethod
-    def extract_ocr_properties(self, ocr_result: list) -> dict:
-        """
-        Extract text, coordinates, and confidence from the OCR result.
+    """
+    Abstract base class for OCR result mapping.
 
-        This abstract method should be implemented by subclasses for each specific OCR model.
+    This class defines the interface for mapping OCR results to standardized formats.
+    It includes validation and error handling mechanisms.
+
+    Attributes:
+        google_vision_mapper (GoogleVisionMapper): Mapper for Google Vision API format
+        format_registry (FormatRegistry): Registry for supported output formats
+        validation_pipeline (ValidationPipeline): Pipeline for validating OCR results
+        result_cache (ResultCache): Cache for storing mapped results
+        error_handler (ErrorHandler): Handler for managing mapping errors
+
+    Methods:
+        extract_ocr_properties: Abstract method for extracting OCR properties
+        map_ocr_result: Map OCR results to specified format
+        _validate_mappers: Validate mapper configurations
+    """
+
+    def __init__(self):
+        """Initialize the OCRMapper with required mappers."""
+        self.google_vision_mapper = GoogleVisionMapper()
+        self._validate_mappers()
+        
+        # Add format registry
+        self.format_registry = FormatRegistry()
+        
+        # Add validation pipeline
+        self.validation_pipeline = ValidationPipeline()
+        
+        # Add result caching
+        self.result_cache = ResultCache()
+        
+        # Add error recovery
+        self.error_handler = ErrorHandler()
+
+    @abstractmethod
+    def extract_ocr_properties(self, ocr_result: List[Any]) -> Dict[str, Any]:
+        """
+        Extract text, coordinates, and confidence from OCR result.
 
         Args:
-            ocr_result (list): The raw OCR result from a specific OCR model.
+            ocr_result (List[Any]): Raw OCR result from specific OCR model
 
         Returns:
-            dict: A dictionary containing extracted properties (text, coordinates, confidence).
+            Dict[str, Any]: Dictionary containing extracted properties
 
         Raises:
-            NotImplementedError: If the method is not implemented by a subclass.
+            NotImplementedError: If method is not implemented by subclass
         """
         pass
-    
-    def map_ocr_result(self, ocr_result: dict) -> dict:
-        """
-        Map the OCR result to Google Vision API format.
 
-        This method extracts properties using the model-specific implementation
-        and then delegates the final mapping to the GoogleVisionMapper.
+    def _validate_mappers(self) -> None:
+        """
+        Validate mapper configurations.
+
+        Raises:
+            MapperValidationError: If required mapper methods are missing
+        """
+        if not hasattr(self.google_vision_mapper, 'map_to_google_vision'):
+            raise MapperValidationError("GoogleVisionMapper missing required method")
+
+    def map_ocr_result(self, ocr_result: Dict[str, Any], format_type: str = "google") -> Dict[str, Any]:
+        """
+        Map OCR result to specified format with error handling.
 
         Args:
-            ocr_result (dict): The raw OCR result from a specific OCR model.
+            ocr_result (Dict[str, Any]): OCR result to map
+            format_type (str): Target format type (default: "google")
 
         Returns:
-            dict: The OCR result mapped to Google Vision API format.
+            Dict[str, Any]: Mapped OCR result
+
+        Raises:
+            ValueError: If format type is not supported
+            MappingError: If mapping operation fails
         """
-        # Extract properties from ocr model
-        extracted_ocr = self.extract_ocr_properties(ocr_result)
-        
-        # Delegate the final mapping to the GoogleVisionMapper
-        return self.google_vision_mapper.map_to_google_vision(ocr_result)
+        try:
+            extracted_ocr = self.extract_ocr_properties(ocr_result)
+            if format_type == "google":
+                return self.google_vision_mapper.map_to_google_vision(extracted_ocr)
+            else:
+                raise ValueError(f"Unsupported format type: {format_type}")
+        except Exception as e:
+            logger.error(f"Mapping failed: {e}")
+            raise MappingError(f"Failed to map OCR result: {str(e)}")
 
-        # if format_type == "google":
-        #     return self.google_vision_mapper.map_to_google_vision(ocr_result)
-        # # Delegate the final mapping to the OpenAIMapper
-        # elif format_type == "openai":
-        #     return self.openai_mapper.map_to_openai_format(ocr_result)
-        # else:
-        #     raise ValueError("Unsupported format type.")
-
-
-		
-		
-
-        
-
-        
