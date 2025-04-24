@@ -171,3 +171,12 @@ model_checkpoints/*
 
 # Meta downloaded model
 Meta*
+
+Qwen*
+.qodo
+
+*checkpoints*
+
+LLaVA*
+
+Qwen-VL*
