@@ -148,8 +148,10 @@ def run_llava_pipeline(model_path, image_path, question, hf_repo, device='cuda' 
         raise
 
 if __name__ == "__main__":
-    model_dir = "checkpoints/llava-hf/llava-1.5-7b-hf"  # Or "checkpoints/liuhaotian/llava-1.5-7b"
-    hf_repo = "llava-hf/llava-1.5-7b-hf"  # Or "liuhaotian/llava-1.5-7b"
+    model_dir = "checkpoints/liuhaotian/llava-1.5-7b"  # Or "checkpoints/liuhaotian/llava-1.5-7b"
+    hf_repo = "liuhaotian/llava-1.5-7b"  # Or "liuhaotian/llava-1.5-7b"
+    # model_dir = "checkpoints/llava-hf/llava-1.5-7b-hf"  # Or "checkpoints/liuhaotian/llava-1.5-7b"
+    # hf_repo = "llava-hf/llava-1.5-7b-hf"  # Or "liuhaotian/llava-1.5-7b"
     image_path = "data/01-11-2023 10.28.56.jpg"
     question = "What is happening in the image?"
     run_llava_pipeline(model_dir, image_path, question, hf_repo)

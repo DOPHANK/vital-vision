@@ -11,3 +11,4 @@ sentencepiece
 opencv-python
 huggingface_hub
 protobuf
+qwen_vl_utils
