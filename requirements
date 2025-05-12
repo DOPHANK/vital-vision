@@ -1,0 +1,14 @@
+torch>=2.0.0
+transformers>=4.36.0
+loguru>=0.7.0
+pillow>=10.0.0
+numpy>=1.24.0
+flash-attn>=2.3.0
+accelerate
+torchvision
+torchaudio
+sentencepiece
+opencv-python
+huggingface_hub
+protobuf
+qwen_vl_utils

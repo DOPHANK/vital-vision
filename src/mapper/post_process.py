@@ -10,6 +10,8 @@ from pydantic import Field, PrivateAttr
 import sys
 import os
 from dotenv import load_dotenv
+from typing import Any, Optional, List
+import os 
 
 load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/utils')))
@@ -92,6 +94,19 @@ def load_model_and_tokenizer(model_name: str, cache_dir: str = "./model_cache", 
 
     except Exception as e:
         raise ValueError(f"Failed to load model and tokenizer: {str(e)}")
+
+def run_llama_model(prompt: str):
+# Load the Llama model and tokenizer
+    model_name = "meta-llama/Llama-3.1-8B-Instruct"
+    print(f"Starting to load the model {model_name} into memory")
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.bfloat16,
+        device_map="auto",
+        token = os.getenv("HUGGINGFACE_TOKEN")
+    )
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    # tokenizer.bos_token_id = 1
 
 
 # Define the custom LLM class

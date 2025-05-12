@@ -1,0 +1,13 @@
+[run]
+branch = True
+omit =
+    tests/*         # Exclude the tests folder
+    */migrations/*    # Exclude a migrations folder
+
+[report]
+exclude_lines =
+    if __name__ == .__main__.:
+
+    # Other common exclusions
+    pragma: no cover  # Lines marked to be skipped from coverage
+    raise NotImplementedError  # Exclude exceptions for unimplemented features

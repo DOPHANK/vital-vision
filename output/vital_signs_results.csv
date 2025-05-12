@@ -1,0 +1,21 @@
+image_path,model_output,inference_time
+47EI/RAW_DATA/47EI-103-1014/26122023/Note/26122023T141557/attachment_1.jpg,"BP: 98/82 mmHg, HR: 11 bpm, RR: 98 breaths/min, SpO2: 97%",205.464
+47EI/RAW_DATA/47EI-103-1014/26122023/Note/26122023T141557/attachment_2.jpg,"BP: 121/88 mmHg, HR: 96 bpm, RR: 30 breaths/min, SpO2: 96%",208.068
+47EI/RAW_DATA/47EI-103-1014/26122023/Note/26122023T152927/attachment_1.jpg,"BP: 122/85 mmHg, HR: 97 bpm, RR: 60 breaths/min, SpO2: 97%",207.577
+47EI/RAW_DATA/47EI-103-1014/26122023/Note/26122023T152927/attachment_2.jpg,"BP: 79/96 mmHg, HR: 11 bpm, RR: 1.0 breaths/min, SpO2: 99%",208.571
+47EI/RAW_DATA/47EI-103-1014/26122023/Note/26122023T163032/attachment_1.jpg,"BP: 100/68 mmHg, HR: 78 bpm, RR: 100 breaths/min, SpO2: 95%",215.344
+47EI/RAW_DATA/47EI-103-1014/26122023/Note/26122023T163032/attachment_2.jpg,"BP: 134/91 mmHg, HR: 96 bpm, RR: 107 breaths/min, SpO2: 91%",208.497
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T090554/attachment_1.jpg,"BP: 84/99 mmHg, HR: 99 bpm, RR: 6 breaths/min, SpO2: 99%",207.192
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T090554/attachment_2.jpg,"BP: 134/100 mmHg, HR: 96 bpm, RR: 86 breaths/min, SpO2: 96%",208.215
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T111744/attachment_1.jpg,"BP: 100/66 mmHg, HR: 100 bpm, RR: 26.6 breaths/min, SpO2: 98%",214.307
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T111744/attachment_2.jpg,"BP: 137/99 mmHg, HR: 113 bpm, RR: Not visible, SpO2: Not visible",207.881
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T140136/attachment_1.jpg,"BP: 125/85 mmHg, HR: 101 bpm, RR: Not visible, SpO2: Not visible",206.372
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T140136/attachment_2.jpg,"BP: 99/66 mmHg, HR: 86 bpm, RR: 26.5 breaths/min, SpO2: 96%",207.309
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T161613/attachment_1.jpg,"BP: 124/80 mmHg, HR: 98 bpm, RR: 5 breaths/min, SpO2: 100%",223.419
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T161613/attachment_2.jpg,"BP: 92/99 mmHg, HR: 92 bpm, RR: 6 breaths/min, SpO2: 99%",209.406
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T232429/attachment_1.jpg,"BP: 126/91 mmHg, HR: 78 bpm, RR: 96 breaths/min, SpO2: 96%",208.378
+47EI/RAW_DATA/47EI-103-1014/27122023/Note/27122023T232429/attachment_2.jpg,"BP: 0/0 mmHg, HR: 83 bpm, RR: 100 breaths/min, SpO2: 90%",209.423
+47EI/RAW_DATA/47EI-103-1014/28122023/Note/28122023T091214/attachment_1.jpg,"BP: 137/101 mmHg, HR: 115 bpm, RR: Not visible, SpO2: Not visible",214.526
+47EI/RAW_DATA/47EI-103-1014/28122023/Note/28122023T091214/attachment_2.jpg,"BP: 100/60 mmHg, HR: 80 bpm, RR: 10 breaths/min, SpO2: 95%",211.198
+47EI/RAW_DATA/47EI-103-1014/28122023/Note/28122023T205333/attachment_1.jpg,"BP: 134/96 mmHg, HR: 81 bpm, RR: 0 breaths/min, SpO2: 95%",209.308
+47EI/RAW_DATA/47EI-103-1014/28122023/Note/28122023T205333/attachment_2.jpg,"BP: 179/96 mmHg, HR: 82 bpm, RR: 60 breaths/min, SpO2: 99%",209.29
